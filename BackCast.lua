@@ -1,5 +1,6 @@
 local BackCast = {}
 BackCast.IsEnabled = Menu.AddOption({ "Utility","BackCast" }, "Enabled", "")
+BackCast.Tinker = Menu.AddOption({ "Utility","BackCast" }, "Tinker", "")
 local working_spells = {
 	"pudge_meat_hook",
 	"windrunner_powershot",
@@ -64,7 +65,6 @@ function BackCast.OnPrepareUnitOrders(orders)
 	if not Menu.IsEnabled(BackCast.IsEnabled) then return true end
 	myHero = Heroes.GetLocal()
 	local abil_name = Ability.GetName(orders.ability)
-	--Console.Print(abil_name)
 	local enable = false
 	for i, name in pairs(working_spells) do
 		if abil_name == name then
@@ -74,8 +74,8 @@ function BackCast.OnPrepareUnitOrders(orders)
 	end
 	local lion = 0
 	if abil_name == "lion_impale" then lion = 200 end
-	Console.Print(lion)
 	if not enable then  return true end 
+	if abil_name == "tinker_march_of_the_machines" and Menu.IsEnabled(BackCast.Tinker) then return true end 
 	if NPC.IsChannellingAbility(myHero) then return false end
 	if NPC.HasModifier(myHero, "modifier_teleporting") then return true end	
 	if ((Ability.GetCastRange(orders.ability) + NPC.GetCastRangeBonus(myHero) + lion) < (orders.position - Entity.GetAbsOrigin(myHero)):Length2D()) and (not (abil_name == "tinker_march_of_the_machines")) then return true end	
