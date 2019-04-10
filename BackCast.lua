@@ -1,6 +1,6 @@
 local BackCast = {}
 BackCast.IsEnabled = Menu.AddOption({ "Utility","BackCast" }, "Enabled", "")
-BackCast.Tinker = Menu.AddOption({ "Utility","BackCast" }, "Tinker", "")
+BackCast.Tinker = Menu.AddOption({ "Utility","BackCast" }, "Disable Tinker", "")
 local working_spells = {
 	"pudge_meat_hook",
 	"windrunner_powershot",
