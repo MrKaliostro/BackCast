@@ -6,40 +6,40 @@ local PosX = Menu.AddOptionSlider({"Utility", "KaliBackCast"}, "PosX", 0, 3840, 
 local PosY = Menu.AddOptionSlider({"Utility", "KaliBackCast"}, "PosY", 0, 2160, 0)
 
 local spells = {
-	"pudge_meat_hook",
-	"windrunner_powershot",
-	"death_prophet_carrion_swarm",
-	"mars_spear",
-	"vengefulspirit_wave_of_terror",
-	"rattletrap_hookshot",
-	"mirana_arrow",
-	"queenofpain_sonic_wave",
-	"keeper_of_the_light_illuminate",
-	"drow_ranger_wave_of_silence",
-	"dragon_knight_breathe_fire",
-	"nyx_assassin_impale",
-	"earthshaker_fissure",
-	"shredder_timber_chain",
-	"jakiro_ice_path",
-	"venomancer_venomous_gale",
-	"weaver_the_swarm",
-	"invoker_deafening_blast",
-	"invoker_tornado",
-	"jakiro_dual_breath",
-	"jakiro_ice_path",
-	"jakiro_macropyre",
-	"lina_dragon_slave",
-	"lina_laguna_blade",
-	"lion_impale",
-	"magnataur_shockwave",
-	"phoenix_icarus_dive",
-	"puck_illusory_orb",
-	"shadow_demon_shadow_poison",
-	"spectre_spectral_dagger",
-	"tidehunter_gush",
-	"ancient_apparition_ice_blast",
-	"troll_warlord_whirling_axes_ranged",
-	"earth_spirit_rolling_boulder"
+	["windrunner_powershot"] = true,
+	["queenofpain_sonic_wave"] = true,
+	["pudge_meat_hook"] = true,
+	["shredder_timber_chain"] = true,
+	["lina_dragon_slave"] = true,
+	["mars_spear"] = true,
+	["keeper_of_the_light_illuminate"] = true,
+	["lion_impale"] = true,
+	["nyx_assassin_impale"] = true,
+	["jakiro_macropyre"] = true,
+	["jakiro_ice_path"] = true,
+	["jakiro_dual_breath"] = true,
+	["death_prophet_carrion_swarm"] = true,
+	["shadow_demon_shadow_poison"] = true,
+	["drow_ranger_wave_of_silence"] = true,
+	["venomancer_venomous_gale"] = true,
+	["dragon_knight_breathe_fire"] = true,
+	["earthshaker_fissure"] = true,
+	["magnataur_shockwave"] = true,
+	["vengefulspirit_wave_of_terror"] = true,
+	["rattletrap_hookshot"] = true,
+	["mirana_arrow"] = true,
+	["weaver_the_swarm"] = true,
+	["invoker_deafening_blast"] = true,
+	["invoker_tornado"] = true,
+	["puck_illusory_orb"] = true,
+	["spectre_spectral_dagger"] = true,
+	["ancient_apparition_ice_blast"] = true,
+	["troll_warlord_whirling_axes_ranged"] = true,
+	["tiny_toss_tree"] = true,
+	["tinker_march_of_the_machines"] = true,
+	["elder_titan_earth_splitter"] = true,
+	["earth_spirit_rolling_boulder"] = true,
+	["phoenix_icarus_dive"] = true
 }
 
 local used = false
@@ -107,14 +107,8 @@ function KaliBackCast.OnPrepareUnitOrders(orders)
 	myHero = Heroes.GetLocal()
 	local ability_name = Ability.GetName(orders.ability)
 	--Log.Write(ability_name)
-	local enable = false
-	for i, name in pairs(spells) do
-		if ability_name == name then
-			enable = true
-			break
-		end
-	end
-	if not enable then return true end 
+
+	if not spells[ability_name] then return true end 
 	if not (ability_name == "phoenix_icarus_dive") and
 	(NPC.IsChannellingAbility(myHero) or 
 	NPC.HasModifier(myHero, "modifier_teleporting") or
@@ -123,12 +117,13 @@ function KaliBackCast.OnPrepareUnitOrders(orders)
 	
 	if NPC.GetActivity(myHero) == 1502 or NPC.IsTurning(myHero) then
 		Player.HoldPosition(orders.player, myHero, false, false) 
+		lastIteration = time()
+	else
+		lastIteration = time() - 1
 	end
 	ability = orders.ability
 	target_position = orders.position
 	used = true
-	lastIteration = time()
-	
 	return false
 end
 
