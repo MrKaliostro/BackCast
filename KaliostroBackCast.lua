@@ -40,7 +40,8 @@ local spells = {
 	["elder_titan_earth_splitter"] = true,
 	["earth_spirit_rolling_boulder"] = true,
 	["phoenix_icarus_dive"] = true,
-	["snapfire_scatterblast"] = true
+	["snapfire_scatterblast"] = true,
+	["treant_natures_grasp"] = true,
 }
 
 local used = false
@@ -102,19 +103,23 @@ function KaliBackCast.OnPrepareUnitOrders(orders)
 		myHero = nil;
 		return;
 	end;
-	--Log.Write(orders.order)
 	
-	if orders.order ~= 5 then return true end
-	myHero = Heroes.GetLocal()
+	
+
+	myHero = orders.npc
 	local ability_name = Ability.GetName(orders.ability)
 	--Log.Write(ability_name)
-
 	if not spells[ability_name] then return true end 
-	if not (ability_name == "phoenix_icarus_dive") and
-	(NPC.IsChannellingAbility(myHero) or 
-	NPC.HasModifier(myHero, "modifier_teleporting") or
-	((Ability.GetCastRange(orders.ability) + NPC.GetCastRangeBonus(myHero)) < (orders.position - Entity.GetAbsOrigin(myHero)):Length2D()))
+
+	if NPC.FindRotationAngle(orders.npc, orders.position) < 0.4 then return true end 
+	if NPC.IsChannellingAbility(myHero) or 
+		NPC.HasModifier(myHero, "modifier_teleporting")
 	then return true end
+	
+	if (not (ability_name == "mars_spear" or ability_name == "phoenix_icarus_dive")) 
+	and ((Ability.GetCastRange(orders.ability) + NPC.GetCastRangeBonus(myHero)) < (orders.position - Entity.GetAbsOrigin(myHero)):Length2D())
+	then return true end
+	
 	
 	if NPC.GetActivity(myHero) == 1502 or NPC.IsTurning(myHero) then
 		Player.HoldPosition(orders.player, myHero, false, false) 
