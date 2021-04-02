@@ -61,10 +61,10 @@ end
 function KaliBackCast.OnDraw() 
 	if (Menu.IsEnabled(MainOption)) then
 		Renderer.SetDrawColor (0, 255, 0, 255)
-		Renderer.DrawText(TMSfont, Menu.GetValue(PosX), Menu.GetValue(PosY), "BackCast:ON")
+		Renderer.DrawText(TMSfont, Menu.GetValue(PosX), Menu.GetValue(PosY), "[BackCast:ON]")
 	else
 		Renderer.SetDrawColor (255, 0, 0, 255)
-		Renderer.DrawText(TMSfont, Menu.GetValue(PosX), Menu.GetValue(PosY), "BackCast:OFF")
+		Renderer.DrawText(TMSfont, Menu.GetValue(PosX), Menu.GetValue(PosY), "[BackCast:OFF]")
 	end
 end;
 
