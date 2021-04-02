@@ -39,7 +39,8 @@ local spells = {
 	["tinker_march_of_the_machines"] = true,
 	["elder_titan_earth_splitter"] = true,
 	["earth_spirit_rolling_boulder"] = true,
-	["phoenix_icarus_dive"] = true
+	["phoenix_icarus_dive"] = true,
+	["snapfire_scatterblast"] = true
 }
 
 local used = false
